@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+		<key>picture</key>
+		<array>
+			<string>Img/main.png</string>
+      <string>Img/Game_board.png</string>
+			<string>Img/leaf.png</string>
+      <string>Img/tools_desk.png</string>
+      
+      <string>Img/tools_shelf.png</string>
+      <string>Img/tools_shelf.png</string>
+      <string>Img/tools_shelf.png</string>
+      <string>Img/score_board.png</string>
+    </array>
+  
+		<key>point</key>
+		<array>
+			<string>{0.5,0.5}</string>
+			<string>{0.55,0.5}</string>
+			<string>{0.75,0.73}</string>
+			<string>{0.3,0.03}</string>
+      
+			<string>{0.07,0.7}</string>
+      <string>{0.07,0.5}</string>
+      <string>{0.07,0.3}</string>
+      <string>{0.1,0.9}</string>
+		</array>
+
+		<key>scale</key>
+		<array>
+			<string>1</string>
+			<string>1</string>
+			<string>1</string>
+			<string>1</string>
+      <string>1</string>
+      <string>1</string>
+		</array>
+
+		<key>button</key>
+		<dict>
+		<key>button_img</key>
+		<array>
+		<string>Img/btn_play.png</string>
+    <string>Img/btn_back.png</string>
+    </array>
+
+		<key>button_pos</key>
+		<array>
+    <string>{0.07,0.15}</string>
+    <string>{0.15,0.1}</string>
+		</array>
+
+		<key>button_fun</key>
+		<array>
+		<integer>1</integer>
+		 <integer>0</integer>
+		</array>
+		</dict>
+  
+  
+</dict>
+</plist>

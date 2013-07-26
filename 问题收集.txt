@@ -1,0 +1,5 @@
+﻿
+1. rotate scale 参考点是？
+2. ccarray多维数组的实现？ccset?
+3.CCLayerColor改为CCLayer会中断,registerWithTouchDispatcher()与ccTouchEnded或者ccTouchesEnded有关？
+
