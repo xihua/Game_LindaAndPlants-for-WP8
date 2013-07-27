@@ -20,6 +20,7 @@
     
 #include "GameScene.h"
 #include "SelectMenu.h"
+#include "GameManage.h"
 
 #include "CCCommon.h"
 #include "BasicLoader.h"
@@ -79,6 +80,10 @@ bool GameScene::init()
 
 		CCString * pString,*SoundString;
 		CCSize size=CCDirector::sharedDirector()->getWinSize();
+		CCSpriteFrameCache *cache;
+		cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+		cache->addSpriteFramesWithFile("Img/Plants/plants.plist","Img/Plants/plants.png");
+		GameManage * gm=GameManage::GetInstance();
 
 		//载入按钮
 		CCDictionary* plistDic = CCDictionary::createWithContentsOfFile("Plist/GameScene.plist");
@@ -156,9 +161,14 @@ bool GameScene::init()
 		//	this->addChild(sprite,5);
 		//}
 
-		CCSprite* sprite = CCSprite::create("Img/Plants/gr_1.png");
-		sprite->setPosition(ccp(size.width*.5,size.height*.5));
-		this->addChild(sprite,5,101);
+		//GameBoard图片加入
+		CCSprite* sprite = CCSprite::create("Img/Game_board.png");
+		sprite->setAnchorPoint(ccp(0,0));
+		sprite->setPosition(ccp(size.width*.22,size.height*.19));
+		this->addChild(sprite,4);
+		//游戏Items载入
+		initItem();
+
 
 
 		//加入触摸层
@@ -169,7 +179,8 @@ bool GameScene::init()
 		 CCSize newSize = CCSizeMake( size.width/2,  size.height/2);
 		//tLayer->setContentSizeInPixels(newSize);//60*8*,*60*
 		tLayer->setDelegate(this);
-		this->addChild(tLayer,200);
+		tLayer->setColor(ccColor3B());
+		this->addChild(tLayer,20);
 	
 		//setTouchEnabled(false);
 
@@ -181,11 +192,17 @@ bool GameScene::init()
 }
 
 void GameScene::singleTouchEnd(){
-	CCDirector* pDirector = CCDirector::sharedDirector();
-	CCNode* s = this->getChildByTag(101);
-	CCSize size=pDirector->getWinSize();
-	s->setPosition(ccp(size.width*.5,size.height*.8));
+	//CCDirector* pDirector = CCDirector::sharedDirector();
+	GameManage * gm=GameManage::GetInstance();
+	// CCSprite* CurSp = (CCSprite*)this->getChildByTag(gm->CItem.colNo*3+gm->CItem.colNo+1);
+
+	for(int i=0;i<ITEMSROW;i++)
+		for(int j=0;j<ITEMSCOL;j++){updateItem(i*ITEMSROW+j+1,gm->Items[i][j]);}
+	//updateItem(gm->CItem.rowNo*ITEMSROW+gm->CItem.colNo+1,gm->Items[gm->CItem.rowNo][gm->CItem.colNo]);
+	//updateItem(gm->NItem.rowNo*ITEMSROW+gm->NItem.colNo+1, gm->Items[gm->NItem.rowNo][gm->NItem.colNo]);//更新CItem,NItem
+
 }
+
 void GameScene::singleTouchMove(){
 
 }
@@ -197,5 +214,46 @@ void GameScene::pauseGame(CCObject *sender){
 void GameScene::backGame(CCObject *sender){
 }
 
-void GameScene::moveItem(){
+void GameScene::initItem(){
+	GameManage * gm=GameManage::GetInstance();
+	if(gm->Gdata.playInit) gm->genItems();//是否第一次玩此关
+	///while(gm->scanAll());//生成没有三个相同的棋盘
+	//while(!gm->isMovable()) gm->genItems();//是否洗牌
+	for(int i=0;i<ITEMSROW;i++)
+		for(int j=0;j<ITEMSCOL;j++){
+			CCString *str=CCString::createWithFormat("gr_%d.png", gm->Items[i][j]);
+			CCLog("%d,%dItem:%d",i,j,gm->Items[i][j]);
+			CCSprite* sprite=CCSprite::createWithSpriteFrameName(str->getCString());
+			//CCSprite* sprite = CCSprite::create(str->getCString());
+			sprite->setAnchorPoint(ccp(0,0));
+			sprite->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*j,gm->Gboard.y+gm->Gboard.rowOneItemPixel*i));
+			sprite->setScale(0.6);
+			this->addChild(sprite,5,i*ITEMSROW+j+1);
+			//CCLog("%d,%dItem:%d",i,j,i*ITEMSROW+j+1);
+		}
+
+}
+bool GameScene::updateItem(int tag,int pic){
+	GameManage * gm=GameManage::GetInstance();
+	//CCLog("tag%d",tag);
+	CCString *str=CCString::createWithFormat("gr_%d.png", pic);
+	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(str->getCString());  
+	//CCLog("curpic%d",pic);
+	CCSprite* Sp = (CCSprite*)this->getChildByTag(tag);
+	Sp->setDisplayFrame(frame);
+
+	//CCString *str=CCString::createWithFormat("gr_%d.png", gm->Items[gm->CItem.rowNo][gm->CItem.colNo]);
+	//CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(str->getCString());  
+	//CCLog("curpic%d",gm->Items[gm->CItem.rowNo][gm->CItem.colNo]);
+	//CCSprite* Sp = (CCSprite*)this->getChildByTag(bTag);
+	//Sp->setDisplayFrame(frame);
+
+	//str=CCString::createWithFormat("gr_%d.png", gm->Items[gm->NItem.rowNo][gm->NItem.colNo]);
+	//frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(str->getCString());
+	//CCLog("curpic%d",gm->Items[gm->NItem.rowNo][gm->NItem.colNo]);
+	//Sp = (CCSprite*)this->getChildByTag(ntag);
+	//Sp->setDisplayFrame(frame);
+
+
+	return true;
 }

@@ -134,6 +134,7 @@
     <Image Include="Assets\img\btn_setting.png" />
     <Image Include="Assets\img\btn_start.png" />
     <Image Include="Assets\img\Game_board.png" />
+    <Image Include="Assets\Img\Game_board_bg.png" />
     <Image Include="Assets\img\house.png" />
     <Image Include="Assets\img\leaf.png" />
     <Image Include="Assets\img\linda_brave.png" />
@@ -143,6 +144,7 @@
     <Image Include="Assets\img\Main_bg.png" />
     <Image Include="Assets\img\monster.png" />
     <Image Include="Assets\Img\Plants\gr_1.png" />
+    <Image Include="Assets\Img\Plants\plants.png" />
     <Image Include="Assets\img\score_board.png" />
     <Image Include="Assets\img\SelectBtn_1.png" />
     <Image Include="Assets\img\SelectBtn_2.png" />
@@ -324,6 +326,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Img\Plants\plants.plist">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+    </None>
     <None Include="Assets\plist\GameScene.plist">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <SubType>Designer</SubType>

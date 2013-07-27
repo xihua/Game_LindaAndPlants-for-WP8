@@ -139,6 +139,12 @@
     <Image Include="Assets\Img\SelectBtn_back.png">
       <Filter>Assets\img</Filter>
     </Image>
+    <Image Include="Assets\Img\Plants\plants.png">
+      <Filter>Assets\img\Plants</Filter>
+    </Image>
+    <Image Include="Assets\Img\Game_board_bg.png">
+      <Filter>Assets\img</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -637,6 +643,9 @@
     </None>
     <None Include="Assets\Plist\Level\l_0.plist">
       <Filter>Assets\plist\Level</Filter>
+    </None>
+    <None Include="Assets\Img\Plants\plants.plist">
+      <Filter>Assets\img\Plants</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
-
-#ifndef __GAME_MANAGE_H__
-#define __GAME_MANAGE_H__
+#ifndef __Game_Manage_H__
+#define __Game_Manage_H__
 
 #include "cocos2d.h"
 #include "CCGeometry.h"
@@ -8,44 +7,59 @@
 #include <wrl\client.h>
 #include <memory>
 #include <vector>
-const int ITEMSROW=5,ITEMSCOL=8;
+
 
 struct GameBoard{
-	CCfloat x,y,width,height;
-	CCfloat rowOneItemPixel,colOneItemPixel;
+	float x,y,width,height;
+	float rowOneItemPixel,colOneItemPixel;
 };
 //GBoard是结构体变量
 
-class CurItemClass{
-public:
-	CCint rowNo,colNo;
-	CCint aftVId,befVId,aftHId,befHId;
-	CCint sameCount;
+ struct Cell{
+	int rowNo,colNo;
 };
+//struct NextItem{
+//	int rowNo,colNo;
+//};
+
+struct CurItem{
+public:
+	int rowNo,colNo;
+	int aftVId,befVId,aftHId,befHId;
+	int same;
+};
+
+const int ITEMSROW=5,ITEMSCOL=8;
+
+struct GameData{
+	bool playInit;//是否第一次玩此关
+	int gameScore,gameLevel;
+	//int savedItems[ITEMSROW][ITEMSCOL];
+};
+
 
 class GameManage 
 {
-public:   
+public: 
 	//CCMutableArray * gameItems;
-	CCint  gameItems[ITEMSROW][ITEMSCOL];
-	static CurItemClass *curItem;
-	//static GameBoard Gboard;
+	int  Items[ITEMSROW][ITEMSCOL];
+	CurItem CItem;
+	CurItem NItem;
+	GameBoard Gboard;
+	GameData Gdata;
 
 public:
 	GameManage();
 	~GameManage();
-	bool hasSame();
-	bool hasVerSame();
-	bool hasHorSame();
-	bool hasCrossSame();
-	bool popSame();
-	// implement the "static create()" method manually
-	// CREATE_FUNC(GameManage);
-
-protected:
-
-private:
-
+	static GameManage* GetInstance();
+	void genItems();
+	int ifHorSame(CurItem itm,int id);
+	int ifVerSame(CurItem itm,int id);
+	bool ifCrossSame(CurItem itm,bool setZero=true);
+	bool isSwapItem(CurItem tmpCItem,CurItem tmpNItem,bool setZero=true);
+	int scanAll();//遍历三个相同
+	bool isMovable();
+	bool updateSame();//遍历0消除并填充
 };
 
 #endif 

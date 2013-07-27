@@ -1,83 +1,236 @@
-Ôªø/*
-* cocos2d-x   http://www.cocos2d-x.org
-*
-* Copyright (c) 2010-2011 - cocos2d-x community
-* 
-* Portions Copyright (c) Microsoft Open Technologies, Inc.
-* All Rights Reserved
-* 
-* Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-* You may obtain a copy of the License at 
-* 
-* http://www.apache.org/licenses/LICENSE-2.0 
-* 
-* Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-* See the License for the specific language governing permissions and limitations under the License.
-*/
-
 #include "pch.h"
-
-#include "GameManage.h"
-
 #include "CCCommon.h"
 #include <vector>
+#include <queue>
 #include <time.h>
 #include "SimpleAudioEngine.h"
+#include "cocos2d.h"
 
+#include "GameManage.h"
 using namespace cocos2d;
-
+using std::queue;
 using namespace CocosDenshion;
 
+static GameManage* hGameManage = NULL;
+GameManage*  GameManage::GetInstance()//ªÒµ√µ±«∞µƒGamaMange µ¿˝
+{
+	if (hGameManage == NULL)
+		hGameManage = new GameManage();
+
+	return hGameManage;
+}
 
 GameManage::GameManage()
 {
-	//CCArray *a=new CCArray(8);
-	//for(int i=0;i<5;i++) gameItems->addObject(a);
-	//gameItems->objectAtIndex();
-	///CCMutableArray *a;
+	CCSize size=CCDirector::sharedDirector()->getWinSize();
 
-	//ÂàùÂßãÂåñitemsÊï∞ÁªÑ
+	//≥ı ºªØitems ˝◊È
+	//Items[3][3]={{1,2,1},{2,1,2},{1,2,1}};
 	for(int i=0;i<ITEMSROW;i++) 
-		for(int j=0;j<ITEMSCOL;j++) gameItems[i][j]=0;
+		for(int j=0;j<ITEMSCOL;j++) Items[i][j]=1;
+	//Items[0][2]=2;
 
-	CurItemClass *curItem=new CurItemClass();
-	curItem->rowNo=curItem->colNo=0;
-	curItem->aftVId=curItem->befVId=curItem->aftHId=curItem->befHId=0;
-	curItem->sameCount=0;
-
-	//Gboard.x=Gboard.y=100.0f;
-	//Gboard.width=500.0f;
-	//Gboard.height=320.0f;
-	//Gboard.rowOneItemPixel=Gboard.rowOneItemPixel=60.0f;
+	//≥ı ºªØ
+	NItem.rowNo=NItem.colNo=0;
+	NItem.befVId=NItem.befHId=-1;			
+	NItem.aftVId=NItem.aftHId=1;
+	
+	//CItem.aftVId=CItem.befVId=CItem.aftHId=CItem.befHId=0;
+	CItem.rowNo=CItem.colNo=0;
+	CItem.befVId=CItem.befHId=-1;			
+	CItem.aftVId=CItem.aftHId=1;
+	CItem.same=0;
+	//≥ı ºªØgameBoard
+	Gboard.x=size.width*.255;Gboard.y=size.height*.3;
+	Gboard.colOneItemPixel=Gboard.rowOneItemPixel=60.0f;
+	Gboard.width= Gboard.colOneItemPixel*ITEMSROW;
+	Gboard.height= Gboard.rowOneItemPixel*ITEMSCOL;
+	//≥ı ºªØGameData
+	Gdata.gameLevel=1;
+	Gdata.gameScore=0;
+	Gdata.playInit=1;
 
 }
+void GameManage::genItems(){//ÀÊª˙…˙≥… ˝◊È
+	//do{
+		for(int i=0;i<ITEMSROW;i++) 
+			for(int j=0;j<ITEMSCOL;j++) 
+			{Items[i][j]=(int)(9*CCRANDOM_0_1())+1;/*CCLog("%d,%d:%d",i,j,Items[i][j]);*/}
+			while(scanAll());	
+	//}while(!isMovable());
+	///while(gm->scanAll());//…˙≥…√ª”–»˝∏ˆœ‡Õ¨µƒ∆Â≈Ã
+	//isMovable();// «∑Òœ¥≈∆
+}
+
+ bool GameManage::ifCrossSame(CurItem itm,bool setZero){	 
+	 if(itm.befHId==-1  ){itm.befHId=ifHorSame(itm,itm.befHId);}
+	 if(itm.aftHId==1)	{itm.aftHId=ifHorSame(itm,itm.aftHId);}
+	 if(itm.befVId==-1 ){itm.befVId=ifVerSame(itm,itm.befVId);}
+	 if(itm.aftVId==1)	{itm.aftVId=ifVerSame(itm,itm.aftVId);}
+	 //cout<<jud; 		
+		 if(((itm.befHId+itm.aftHId)>=2 )|| ((itm.befVId+itm.aftVId)>=2)){//œ‡¡⁄¥Û”⁄»˝∏ˆœ‡Õ¨‘ÚŒ™¡„
+			 if(setZero==true){
+			 for(;itm.aftHId>0;itm.aftHId--) Items[itm.rowNo][itm.colNo+itm.aftHId]=0;
+			 for(;itm.befHId>0;itm.befHId--) Items[itm.rowNo][itm.colNo-itm.befHId]=0;
+			 for(;itm.aftVId>0;itm.aftVId--) Items[itm.rowNo+itm.aftVId][itm.colNo]=0;
+			 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;
+			} 
+		 Items[itm.rowNo][itm.colNo]=0;
+		return 1;}
+	 else return 0;
+ }
+
+bool GameManage::updateSame(){
+
+	queue<int> sq;
+	for(int i=0;i<ITEMSROW;i++)
+		for(int j=0;j<ITEMSCOL;j++){//±È¿˙0
+				if(Items[i][j]==0) {
+					/*cout<<endl<<"i,j"<<i<<" "<<j;*/
+					int sameC=0;//∆´“∆¡ø
+					
+					for(int r=1;r<ITEMSROW;r++){
+					if(Items[i+r][j]==0){//¡–œÚ±È¿˙0
+						sameC++;}
+					else break;
+					}
+					sq.empty();
+					//sq.count=-1;
+					for(int r=1;i+sameC+r<ITEMSROW;r++){
+						sq.push(Items[i+sameC+r][j]);
+						//++sq.count;//‘›¥Ê»Î∂”¡–
+						//sq.row[sq.count]=Items[i+sameC+r][j];
+						}
+					for(int r=0;r<sameC+1;r++){
+						sq.push(rand()%9+1);
+						//++sq.count;//≤π≥‰sameC+1∏ˆÀÊª˙ ˝»Î∂”¡–
+						//sq.row[sq.count]=rand()%9+1;
+						}
+					//cout<<endl;
+					// for(int r=0;r<=sq.count;r++){
+					//	 cout<<sq.row[sq.count]<<" ";
+					// }
+					//»°≥ˆ∂”¡– ≤¢œ¬“∆
+					for(int r=0;i+r<ITEMSROW;r++){
+						Items[i+r][j]=sq.front();sq.pop();}
+						//Items[i+r][j]=sq.row[r];
+				}
+		}
+	 return 1;
+}
+int GameManage::ifHorSame(CurItem itm,int id){	
+	 int i=1,sameC=0;//sameCŒ™∆´“∆¡ø
+	 do{		 
+		 if(itm.same==Items[itm.rowNo][itm.colNo+id*i])
+		 {sameC++;
+		 //if(sameC>=2){Items[itm.rowNo][itm.colNo+id*i]=0;//œ‡¡⁄¥Û”⁄»˝∏ˆœ‡Õ¨‘ÚŒ™¡„
+		 //Items[itm.rowNo][itm.colNo+1]=Items[itm.rowNo][itm.colNo+2]=0;}
+		 i++;}
+		 else break;
+	}while(0<=itm.colNo+id*i && itm.colNo+id*i<ITEMSCOL);
+	 return sameC;
+}
+
+int GameManage::ifVerSame(CurItem itm,int id){	
+	 int i=1,sameC=0;
+	 do{		 
+		 if(itm.same==Items[itm.rowNo+id*i][itm.colNo])
+		 {sameC++;
+/*		 if(sameC>=2){Items[itm.rowNo+id*i][itm.colNo]=0;
+		 Items[itm.rowNo+1][itm.colNo]=Items[itm.rowNo+2][itm.colNo]=0;;}	*/	 
+		 i++;}
+		 else break;
+	}while(0<=itm.rowNo+id*i && itm.rowNo+id*i<ITEMSROW);
+	 return sameC;
+}
+
+bool swap(int &ct,int&nt){
+	int tmp;tmp=ct;ct=nt;nt=tmp;
+	return 1;}
+
+bool GameManage::isSwapItem(CurItem tmpCItem,CurItem tmpNItem,bool setZero){
+	int cTmp,nTmp;
+	cTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
+	nTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
+	Items[tmpCItem.rowNo][tmpCItem.colNo]=Items[tmpNItem.rowNo][tmpNItem.colNo];
+	Items[tmpNItem.rowNo][tmpNItem.colNo]=cTmp;
+	
+	tmpCItem.same=Items[tmpCItem.rowNo][tmpCItem.colNo];
+	tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
+	//CCLog("swap%d,%d:%d",tmpCItem.rowNo,tmpCItem.colNo,tmpCItem.same);
+	//CCLog("and%d,%d:%d",tmpNItem.rowNo,tmpNItem.colNo,tmpNItem.same);
+	if(ifCrossSame(tmpCItem,setZero)||ifCrossSame(tmpNItem,setZero)){ 
+		return 1;}
+	else {
+		Items[tmpCItem.rowNo][tmpCItem.colNo]=cTmp;//Ωªªªªÿ»•
+		Items[tmpNItem.rowNo][tmpNItem.colNo]=nTmp;
+		return 0;
+	}
+}
+int GameManage::scanAll(){
+	CurItem tmpItem;
+	 queue<Cell>sq;			
+	tmpItem.aftVId=tmpItem.aftHId=1;
+	//±È¿˙’˚∏ˆGameBoard
+	 for(int i=0;i<ITEMSROW;i++)
+		 for(int j=0;j<ITEMSCOL;j++){			 
+			tmpItem.rowNo=i;	tmpItem.colNo=j;
+			tmpItem.same=Items[tmpItem.rowNo][tmpItem.colNo];
+			int HSame=ifHorSame(tmpItem,tmpItem.aftHId);
+			int VSame=ifVerSame(tmpItem,tmpItem.aftVId);			
+			if(VSame>=2){					
+				for(int r=1;r<=VSame;r++) {//◊›œÚ¥Û”⁄»˝∏ˆœ‡Õ¨‘Ú»Î∂”
+					Cell tmpC;tmpC.rowNo=i+r;tmpC.colNo=j;sq.push(tmpC);}
+				}
+			if(HSame>=2){	
+				for(int c=0;c<=HSame;c++){//∫·œÚ¥Û”⁄»˝∏ˆœ‡Õ¨‘Ú»Î∂”
+					Cell tmpC;tmpC.rowNo=i;tmpC.colNo=j+c;sq.push(tmpC);}
+				}
+		}
+	 if(sq.empty()) return 0;
+	 else {
+		 int sqCount=0;
+	//µØ≥ˆ∂”¡–£¨≤¢÷√Œ™¡„
+	 while(!sq.empty()){
+		Cell tmpC=sq.front();
+		//cout<<"tmpC:"<<tmpC.rowNo<<"-"<<tmpC.colNo;
+		Items[tmpC.rowNo][tmpC.colNo]=0;
+		sq.pop();sqCount++;}
+		updateSame();
+		return sqCount;
+	 }
+}
+
+bool GameManage::isMovable(){
+	CurItem tmpCItem,tmpNItem;		
+	tmpCItem.befVId=tmpCItem.befHId=tmpNItem.befVId=tmpNItem.befHId=-1;
+	tmpCItem.aftVId=tmpCItem.aftHId=tmpNItem.aftVId=tmpNItem.aftHId=1;
+
+	//±È¿˙’˚∏ˆGameBoard
+	 for(int i=0;i<ITEMSROW;i++)
+		 for(int j=0;j<ITEMSCOL;j++){
+			 //CCLog("%d,%d",i,j);
+			 tmpCItem.rowNo=i;tmpCItem.colNo=j;
+			 tmpCItem.same=Items[tmpCItem.rowNo][tmpCItem.colNo];
+
+			 tmpNItem.rowNo=i;tmpNItem.colNo=j+1;//∫·œÚΩªªª
+			 tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
+			 if(isSwapItem(tmpCItem,tmpNItem,false) && tmpNItem.colNo<ITEMSCOL)//ºÏ≤‚Ωªªª «∑Ò≥…π¶
+					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//Ωªªªªÿ»•
+					//CCLog("%d,Hor success",Items[tmpCItem.rowNo][tmpCItem.colNo]);
+					 return 1;}	
+
+			tmpNItem.rowNo=i+1;tmpNItem.colNo=j;//◊›œÚΩªªª
+			 tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
+			 if(isSwapItem(tmpCItem,tmpNItem,false) && tmpNItem.rowNo<ITEMSROW)//ºÏ≤‚Ωªªª «∑Ò≥…π¶
+					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//Ωªªªªÿ»•
+					//CCLog("Ver success");
+					return 1;}	
+		 }
+	return 0;	
+}
+
 GameManage::~GameManage()
 {
-
-}
-
-bool GameManage::hasVerSame()
-{
-	return true;
-}
-
-bool GameManage::hasHorSame()
-{
-	return true;
-}
-
-bool GameManage::hasSame()
-{
-	return true;
-}
-
-bool GameManage::hasCrossSame()
-{
-	return true;
-}
-
-bool GameManage::popSame()
-{
-	return true;
+	delete hGameManage;
 }

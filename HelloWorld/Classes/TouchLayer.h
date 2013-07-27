@@ -17,13 +17,17 @@ public:
 };
 
 
-class TouchLayer : public cocos2d::CCLayerColor//,public TouchLayerDelegate
+class TouchLayer : public cocos2d::CCLayerColor//,public GameManage
 {
 public:
 	TouchLayer();
 	~TouchLayer();
 
 	virtual bool init();  
+	
+	//CurItem CItem;
+	//GameBoard Gboard;
+	//NextItem NItem;
 
 	// a selector callback
 	//virtual void menuCloseCallback(CCObject* pSender);

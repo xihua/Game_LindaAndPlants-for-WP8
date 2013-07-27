@@ -35,8 +35,8 @@ public:
 	void singleTouchMove(); 
 	void pauseGame(CCObject *sender);
 	void backGame(CCObject *sender);
-	void moveItem();
-
+	void initItem();
+	bool updateItem(int tag,int pic);//Ë¢ÐÂÌî³äÍ¼Æ¬
 protected:
 	
 private:
