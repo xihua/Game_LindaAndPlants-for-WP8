@@ -124,8 +124,10 @@ void TouchLayer::ccTouchEnded(CCTouch* touch, CCEvent* event)
 				 if(gm->isSwapItem(gm->CItem,gm->NItem))//检测交换是否成功
 					{
 					gm->updateSame();CCLog("swap success");
-					//while(gm->scanAll()) {CCLog("Great!");}//连击加分			
-					//if(!(gm->isMovable())) {gm->genItems();CCLog("reset board!");}//洗牌
+					while(gm->scanAll()) {CCLog("Great!");}//连击加分			
+					//if(!(gm->isMovable())) {
+						//gm->genItems();
+						//CCLog("reset board!");}//洗牌
 					this->getDelegate()->singleTouchEnd();
 					
 				 }

@@ -26,6 +26,9 @@
     <Filter Include="Assets\img\Plants">
       <UniqueIdentifier>{cdf7804a-2c44-4301-bc7f-d5925e940533}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Audio">
+      <UniqueIdentifier>{136f318e-2776-4fab-a352-16f0e0ed99ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="SplashScreenImage.jpg">
@@ -145,6 +148,9 @@
     <Image Include="Assets\Img\Game_board_bg.png">
       <Filter>Assets\img</Filter>
     </Image>
+    <Image Include="Assets\Img\stars.png">
+      <Filter>Assets\img</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -168,6 +174,9 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Classes\GameManage.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Effects.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -579,6 +588,9 @@
     <ClInclude Include="Classes\GameManage.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Classes\Effects.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="WMAppManifest.xml" />
@@ -647,5 +659,10 @@
     <None Include="Assets\Img\Plants\plants.plist">
       <Filter>Assets\img\Plants</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Audio\background.wav">
+      <Filter>Assets\Audio</Filter>
+    </Media>
   </ItemGroup>
 </Project>

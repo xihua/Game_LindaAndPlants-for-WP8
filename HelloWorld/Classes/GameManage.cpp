@@ -43,8 +43,8 @@ GameManage::GameManage()
 	//初始化gameBoard
 	Gboard.x=size.width*.255;Gboard.y=size.height*.3;
 	Gboard.colOneItemPixel=Gboard.rowOneItemPixel=60.0f;
-	Gboard.width= Gboard.colOneItemPixel*ITEMSROW;
-	Gboard.height= Gboard.rowOneItemPixel*ITEMSCOL;
+	Gboard.width= Gboard.colOneItemPixel*ITEMSCOL;
+	Gboard.height= Gboard.rowOneItemPixel*ITEMSROW;
 	//初始化GameData
 	Gdata.gameLevel=1;
 	Gdata.gameScore=0;
@@ -58,8 +58,9 @@ void GameManage::genItems(){//随机生成数组
 			{Items[i][j]=(int)(9*CCRANDOM_0_1())+1;/*CCLog("%d,%d:%d",i,j,Items[i][j]);*/}
 			while(scanAll());	
 	//}while(!isMovable());
-	///while(gm->scanAll());//生成没有三个相同的棋盘
-	//isMovable();//是否洗牌
+	//while(gm->scanAll());//生成没有三个相同的棋盘
+	//if(isMovable()) CCLog("movable");
+	//else CCLog("regen");
 }
 
  bool GameManage::ifCrossSame(CurItem itm,bool setZero){	 
@@ -73,9 +74,8 @@ void GameManage::genItems(){//随机生成数组
 			 for(;itm.aftHId>0;itm.aftHId--) Items[itm.rowNo][itm.colNo+itm.aftHId]=0;
 			 for(;itm.befHId>0;itm.befHId--) Items[itm.rowNo][itm.colNo-itm.befHId]=0;
 			 for(;itm.aftVId>0;itm.aftVId--) Items[itm.rowNo+itm.aftVId][itm.colNo]=0;
-			 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;
-			} 
-		 Items[itm.rowNo][itm.colNo]=0;
+			 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;		
+			 Items[itm.rowNo][itm.colNo]=0;} 
 		return 1;}
 	 else return 0;
  }
@@ -212,20 +212,25 @@ bool GameManage::isMovable(){
 			 //CCLog("%d,%d",i,j);
 			 tmpCItem.rowNo=i;tmpCItem.colNo=j;
 			 tmpCItem.same=Items[tmpCItem.rowNo][tmpCItem.colNo];
-
+ 			
 			 tmpNItem.rowNo=i;tmpNItem.colNo=j+1;//横向交换
 			 tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
+			 
+			 //printf("HorN%d,%d:%d\n",tmpNItem.rowNo,tmpNItem.colNo, tmpNItem.same);
 			 if(isSwapItem(tmpCItem,tmpNItem,false) && tmpNItem.colNo<ITEMSCOL)//检测交换是否成功
 					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//交换回去
-					//CCLog("%d,Hor success",Items[tmpCItem.rowNo][tmpCItem.colNo]);
+					CCLog("%d,%d,Hor success\n",tmpCItem.rowNo,tmpCItem.colNo);
+					// printf("%d,%d,Hor success\n",tmpCItem.rowNo,tmpCItem.colNo);
 					 return 1;}	
 
 			tmpNItem.rowNo=i+1;tmpNItem.colNo=j;//纵向交换
 			 tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
+			 //printf("VerN%d,%d:%d\n",tmpNItem.rowNo,tmpNItem.colNo, tmpNItem.same);
 			 if(isSwapItem(tmpCItem,tmpNItem,false) && tmpNItem.rowNo<ITEMSROW)//检测交换是否成功
 					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//交换回去
-					//CCLog("Ver success");
-					return 1;}	
+					CCLog("%d,%d,Vor success\n",tmpCItem.rowNo,tmpCItem.colNo);
+					//printf("%d,%d,Vor success\n",tmpCItem.rowNo,tmpCItem.colNo);
+				return 1;}	
 		 }
 	return 0;	
 }

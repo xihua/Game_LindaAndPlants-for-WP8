@@ -76,12 +76,10 @@ bool HelloWorld::init()
 			break;
 		}
 
-		//显示HelloWorld
-		//CCLabelTTF* pLabel = CCLabelTTF::create("故事书", "msyh", 24);
 		CCSize size = CCDirector::sharedDirector()->getWinSize();
-		//pLabel->setPosition( ccp(size.width * 0.5, size.height * 0.5) );
-		//pLabel->setColor(ccc3(160, 80, 5));
-		//this->addChild(pLabel, 10);
+
+		//添加背景音乐
+		//SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Assets\\Audio\\background.wav", true);//绝对路径
 
 		//载入按钮
 		CCDictionary* plistDic = CCDictionary::createWithContentsOfFile("Plist/MainMenu.plist");

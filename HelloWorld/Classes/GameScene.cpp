@@ -21,6 +21,7 @@
 #include "GameScene.h"
 #include "SelectMenu.h"
 #include "GameManage.h"
+#include "Effects.h"
 
 #include "CCCommon.h"
 #include "BasicLoader.h"
@@ -196,8 +197,26 @@ void GameScene::singleTouchEnd(){
 	GameManage * gm=GameManage::GetInstance();
 	// CCSprite* CurSp = (CCSprite*)this->getChildByTag(gm->CItem.colNo*3+gm->CItem.colNo+1);
 
+	//粒子效果有问题
+	//Effects *ge=Effects ::GetInstance();
+	//ge->popEffect->setAutoRemoveOnFinish(true);	
+	//this->addChild(ge->popEffect,10);
+	//ge->popEffect->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*(gm->NItem.colNo+.5),gm->Gboard.y+gm->Gboard.rowOneItemPixel*(gm->NItem.rowNo+.5)));
+	//ge->popEffect->retain();
+
+	CCParticleSystem* popEffect = CCParticleFlower::create();
+	//popEffect->retain();
+	popEffect->setAutoRemoveOnFinish(true);	
+	popEffect->setTexture(CCTextureCache::sharedTextureCache()->addImage("Img/stars.png"));
+	popEffect->setDuration(.05);
+	popEffect->setEmissionRate(100);
+	popEffect->setPosVar(ccp(5,5));
+	this->addChild(popEffect,10);
+	popEffect->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*(gm->NItem.colNo+.5),gm->Gboard.y+gm->Gboard.rowOneItemPixel*(gm->NItem.rowNo+.5)));
+	
+
 	for(int i=0;i<ITEMSROW;i++)
-		for(int j=0;j<ITEMSCOL;j++){updateItem(i*ITEMSROW+j+1,gm->Items[i][j]);}
+		for(int j=0;j<ITEMSCOL;j++){updateItem(i*ITEMSCOL+j+1,gm->Items[i][j]);}
 	//updateItem(gm->CItem.rowNo*ITEMSROW+gm->CItem.colNo+1,gm->Items[gm->CItem.rowNo][gm->CItem.colNo]);
 	//updateItem(gm->NItem.rowNo*ITEMSROW+gm->NItem.colNo+1, gm->Items[gm->NItem.rowNo][gm->NItem.colNo]);//更新CItem,NItem
 
@@ -222,13 +241,13 @@ void GameScene::initItem(){
 	for(int i=0;i<ITEMSROW;i++)
 		for(int j=0;j<ITEMSCOL;j++){
 			CCString *str=CCString::createWithFormat("gr_%d.png", gm->Items[i][j]);
-			CCLog("%d,%dItem:%d",i,j,gm->Items[i][j]);
+			//CCLog("%d,%dItem:%d",i,j,gm->Items[i][j]);
 			CCSprite* sprite=CCSprite::createWithSpriteFrameName(str->getCString());
 			//CCSprite* sprite = CCSprite::create(str->getCString());
 			sprite->setAnchorPoint(ccp(0,0));
 			sprite->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*j,gm->Gboard.y+gm->Gboard.rowOneItemPixel*i));
 			sprite->setScale(0.6);
-			this->addChild(sprite,5,i*ITEMSROW+j+1);
+			this->addChild(sprite,5,i*ITEMSCOL+j+1);
 			//CCLog("%d,%dItem:%d",i,j,i*ITEMSROW+j+1);
 		}
 

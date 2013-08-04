@@ -154,6 +154,7 @@
     <Image Include="Assets\img\SelectBtn_unable.png" />
     <Image Include="Assets\img\SelectMenu_board.png" />
     <Image Include="Assets\img\shelf.png" />
+    <Image Include="Assets\Img\stars.png" />
     <Image Include="Assets\img\str_plan.png" />
     <Image Include="Assets\img\str_title.png" />
     <Image Include="Assets\img\tools_desk.png" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="Classes\AppDelegate.h" />
     <ClInclude Include=".\cocos2dorig.h" />
+    <ClInclude Include="Classes\Effects.h" />
     <ClInclude Include="Classes\EndStory.h" />
     <ClInclude Include="Classes\GameManage.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -313,6 +315,7 @@
   <ItemGroup>
     <ClCompile Include="Classes\AppDelegate.cpp" />
     <ClCompile Include=".\cocos2dorig.cpp" />
+    <ClCompile Include="Classes\Effects.cpp" />
     <ClCompile Include="Classes\EndStory.cpp" />
     <ClCompile Include="Classes\GameManage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -398,6 +401,9 @@
     <ProjectReference Include="..\Cocos2dWindowsPhone\Cocos2dWindowsPhone.vcxproj">
       <Project>{8c939c76-a430-450e-9607-56cec95dee2f}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Audio\background.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsPhone\v$(TargetPlatformVersion)\Microsoft.Cpp.WindowsPhone.$(TargetPlatformVersion).targets" />
