@@ -52,12 +52,12 @@ GameManage::GameManage()
 
 }
 void GameManage::genItems(){//随机生成数组
-	//do{
+	do{
 		for(int i=0;i<ITEMSROW;i++) 
 			for(int j=0;j<ITEMSCOL;j++) 
 			{Items[i][j]=(int)(9*CCRANDOM_0_1())+1;/*CCLog("%d,%d:%d",i,j,Items[i][j]);*/}
 			while(scanAll());	
-	//}while(!isMovable());
+	}while(!isMovable());
 	//while(gm->scanAll());//生成没有三个相同的棋盘
 	//if(isMovable()) CCLog("movable");
 	//else CCLog("regen");
@@ -74,8 +74,8 @@ void GameManage::genItems(){//随机生成数组
 			 for(;itm.aftHId>0;itm.aftHId--) Items[itm.rowNo][itm.colNo+itm.aftHId]=0;
 			 for(;itm.befHId>0;itm.befHId--) Items[itm.rowNo][itm.colNo-itm.befHId]=0;
 			 for(;itm.aftVId>0;itm.aftVId--) Items[itm.rowNo+itm.aftVId][itm.colNo]=0;
-			 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;		
-			 Items[itm.rowNo][itm.colNo]=0;} 
+			 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;			 
+			 Items[itm.rowNo][itm.colNo]=0;}
 		return 1;}
 	 else return 0;
  }
@@ -151,14 +151,11 @@ bool swap(int &ct,int&nt){
 bool GameManage::isSwapItem(CurItem tmpCItem,CurItem tmpNItem,bool setZero){
 	int cTmp,nTmp;
 	cTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
-	nTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
-	Items[tmpCItem.rowNo][tmpCItem.colNo]=Items[tmpNItem.rowNo][tmpNItem.colNo];
+	nTmp=Items[tmpCItem.rowNo][tmpCItem.colNo]=Items[tmpNItem.rowNo][tmpNItem.colNo];
 	Items[tmpNItem.rowNo][tmpNItem.colNo]=cTmp;
-	
+
 	tmpCItem.same=Items[tmpCItem.rowNo][tmpCItem.colNo];
 	tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
-	//CCLog("swap%d,%d:%d",tmpCItem.rowNo,tmpCItem.colNo,tmpCItem.same);
-	//CCLog("and%d,%d:%d",tmpNItem.rowNo,tmpNItem.colNo,tmpNItem.same);
 	if(ifCrossSame(tmpCItem,setZero)||ifCrossSame(tmpNItem,setZero)){ 
 		return 1;}
 	else {
@@ -166,6 +163,23 @@ bool GameManage::isSwapItem(CurItem tmpCItem,CurItem tmpNItem,bool setZero){
 		Items[tmpNItem.rowNo][tmpNItem.colNo]=nTmp;
 		return 0;
 	}
+	//int cTmp,nTmp;
+	//cTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
+	//nTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
+	//Items[tmpCItem.rowNo][tmpCItem.colNo]=Items[tmpNItem.rowNo][tmpNItem.colNo];
+	//Items[tmpNItem.rowNo][tmpNItem.colNo]=cTmp;
+	//
+	//tmpCItem.same=Items[tmpCItem.rowNo][tmpCItem.colNo];
+	//tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
+	////CCLog("swap%d,%d:%d",tmpCItem.rowNo,tmpCItem.colNo,tmpCItem.same);
+	////CCLog("and%d,%d:%d",tmpNItem.rowNo,tmpNItem.colNo,tmpNItem.same);
+	//if(ifCrossSame(tmpCItem,setZero)||ifCrossSame(tmpNItem,setZero)){ 
+	//	return 1;}
+	//else {
+	//	Items[tmpCItem.rowNo][tmpCItem.colNo]=cTmp;//交换回去
+	//	Items[tmpNItem.rowNo][tmpNItem.colNo]=nTmp;
+	//	return 0;
+	//}
 }
 int GameManage::scanAll(){
 	CurItem tmpItem;

@@ -403,7 +403,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Assets\Audio\background.wav" />
+    <Media Include="Assets\Audio\background.wav" />
+    <Media Include="Assets\Audio\change.wav" />
+    <Media Include="Assets\Audio\move.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsPhone\v$(TargetPlatformVersion)\Microsoft.Cpp.WindowsPhone.$(TargetPlatformVersion).targets" />

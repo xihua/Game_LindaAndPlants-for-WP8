@@ -1,22 +1,4 @@
-﻿/*
-* cocos2d-x   http://www.cocos2d-x.org
-*
-* Copyright (c) 2010-2011 - cocos2d-x community
-* 
-* Portions Copyright (c) Microsoft Open Technologies, Inc.
-* All Rights Reserved
-* 
-* Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-* You may obtain a copy of the License at 
-* 
-* http://www.apache.org/licenses/LICENSE-2.0 
-* 
-* Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-* See the License for the specific language governing permissions and limitations under the License.
-*/
-
-#include "pch.h"
+﻿#include "pch.h"
     
 #include "GameScene.h"
 #include "SelectMenu.h"
@@ -117,7 +99,7 @@ bool GameScene::init()
 			CCPoint point = CCPointFromString(point_string->getCString());
 			menu->setPosition(ccp(size.width*point.x,size.height*point.y));
 			menu->setTouchEnabled(true);
-			this->addChild(menu,10);
+			this->addChild(menu,30);
 		}	
 
 		//图片的载入
@@ -167,10 +149,16 @@ bool GameScene::init()
 		sprite->setAnchorPoint(ccp(0,0));
 		sprite->setPosition(ccp(size.width*.22,size.height*.19));
 		this->addChild(sprite,4);
+
 		//游戏Items载入
 		initItem();
 
-
+		//得分的载入
+		CCString *str=CCString::createWithFormat("%d",gm->Gdata.gameScore);
+		CCLabelTTF* pLabel = CCLabelTTF::create(str->getCString(), "msyh", 30);
+		pLabel->setPosition( ccp(size.width * 0.15, size.height * 0.85) );
+		pLabel->setColor(ccc3(60, 180, 150));
+		this->addChild(pLabel, 10,1001);
 
 		//加入触摸层
 		TouchLayer *tLayer=TouchLayer::create();
@@ -196,6 +184,7 @@ void GameScene::singleTouchEnd(){
 	//CCDirector* pDirector = CCDirector::sharedDirector();
 	GameManage * gm=GameManage::GetInstance();
 	// CCSprite* CurSp = (CCSprite*)this->getChildByTag(gm->CItem.colNo*3+gm->CItem.colNo+1);
+	SimpleAudioEngine::sharedEngine()->playEffect("Assets\\Audio\\change.wav",false);
 
 	//粒子效果有问题
 	//Effects *ge=Effects ::GetInstance();
@@ -214,11 +203,14 @@ void GameScene::singleTouchEnd(){
 	this->addChild(popEffect,10);
 	popEffect->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*(gm->NItem.colNo+.5),gm->Gboard.y+gm->Gboard.rowOneItemPixel*(gm->NItem.rowNo+.5)));
 	
+	//得分更新
+	CCString *str=CCString::createWithFormat("%d",gm->Gdata.gameScore);
+	CCLabelTTF* Sp = (CCLabelTTF*)this->getChildByTag(1001);
+	Sp->setString(str->getCString());
 
 	for(int i=0;i<ITEMSROW;i++)
 		for(int j=0;j<ITEMSCOL;j++){updateItem(i*ITEMSCOL+j+1,gm->Items[i][j]);}
-	//updateItem(gm->CItem.rowNo*ITEMSROW+gm->CItem.colNo+1,gm->Items[gm->CItem.rowNo][gm->CItem.colNo]);
-	//updateItem(gm->NItem.rowNo*ITEMSROW+gm->NItem.colNo+1, gm->Items[gm->NItem.rowNo][gm->NItem.colNo]);//更新CItem,NItem
+
 
 }
 
@@ -231,6 +223,7 @@ void GameScene::pauseGame(CCObject *sender){
 }
 
 void GameScene::backGame(CCObject *sender){
+	CCDirector::sharedDirector()->replaceScene(CCTransitionShrinkGrow::create(1,SelectMenu::scene()));	
 }
 
 void GameScene::initItem(){

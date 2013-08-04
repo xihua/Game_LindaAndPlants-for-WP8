@@ -661,7 +661,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Assets\Audio\background.wav">
+    <Media Include="Assets\Audio\background.wav">
+      <Filter>Assets\Audio</Filter>
+    </Media>
+    <Media Include="Assets\Audio\move.wav">
+      <Filter>Assets\Audio</Filter>
+    </Media>
+    <Media Include="Assets\Audio\change.wav">
       <Filter>Assets\Audio</Filter>
     </Media>
   </ItemGroup>

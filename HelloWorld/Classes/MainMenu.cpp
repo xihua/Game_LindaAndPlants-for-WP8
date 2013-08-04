@@ -79,7 +79,7 @@ bool HelloWorld::init()
 		CCSize size = CCDirector::sharedDirector()->getWinSize();
 
 		//添加背景音乐
-		//SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Assets\\Audio\\background.wav", true);//绝对路径
+		SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Assets\\Audio\\background.wav", true);//绝对路径
 
 		//载入按钮
 		CCDictionary* plistDic = CCDictionary::createWithContentsOfFile("Plist/MainMenu.plist");

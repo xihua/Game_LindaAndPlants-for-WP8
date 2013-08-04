@@ -121,14 +121,18 @@ void TouchLayer::ccTouchEnded(CCTouch* touch, CCEvent* event)
 			 int difCol= gm->NItem.colNo- gm->CItem.colNo ;
 			 int difRow= gm->NItem.rowNo- gm->CItem.rowNo;
 			 if((difCol==0||difRow==0)&&(difCol!=difRow)&&(abs(difCol)==1||abs(difRow)==1)) {//是否相邻
+				// SimpleAudioEngine::sharedEngine()->playEffect("Assets\\Audio\\move.wav", false);
 				 if(gm->isSwapItem(gm->CItem,gm->NItem))//检测交换是否成功
 					{
-					gm->updateSame();CCLog("swap success");
-					while(gm->scanAll()) {CCLog("Great!");}//连击加分			
-					//if(!(gm->isMovable())) {
-						//gm->genItems();
-						//CCLog("reset board!");}//洗牌
+					gm->updateSame();gm->Gdata.gameScore+=10;//CCLog("swap success");
 					this->getDelegate()->singleTouchEnd();
+
+					while(gm->scanAll()) {gm->Gdata.gameScore+=15;CCLog("Great!");
+						this->getDelegate()->singleTouchEnd();}//连击加分	
+					
+
+					if(!(gm->isMovable())) {gm->genItems();CCLog("reset board!");//洗牌
+						this->getDelegate()->singleTouchEnd();}
 					
 				 }
 				 else CCLog("swap fail");}
