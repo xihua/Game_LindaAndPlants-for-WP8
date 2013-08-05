@@ -24,15 +24,8 @@ public:
 	~TouchLayer();
 
 	virtual bool init();  
-	
-	//CurItem CItem;
-	//GameBoard Gboard;
-	//NextItem NItem;
-
 	// a selector callback
 	//virtual void menuCloseCallback(CCObject* pSender);
-
-	//CC_SYNTHESIZE();
 
 public:
 	

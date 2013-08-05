@@ -1,4 +1,3 @@
-
 #ifndef __GameScene_SCENE_H__
 #define __GameScene_SCENE_H__
 
@@ -11,6 +10,7 @@
 
 #include "TouchLayer.h"
 //#include "GameManage.h"
+#define AR_FM_PL(key) (CCArray*)plistDic->objectForKey(key)
 
 class GameScene : public cocos2d::CCLayerColor,public TouchLayerDelegate
 {
@@ -37,9 +37,6 @@ public:
 	void backGame(CCObject *sender);
 	void initItem();
 	bool updateItem(int tag,int pic);//Ë¢ÐÂÌî³äÍ¼Æ¬
-protected:
-	
-private:
 
 private: 
 	int SoundId;

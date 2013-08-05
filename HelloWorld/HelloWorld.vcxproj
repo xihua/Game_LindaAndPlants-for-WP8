@@ -130,6 +130,7 @@
     <Image Include="Assets\img\btn_back.png" />
     <Image Include="Assets\img\btn_garden.png" />
     <Image Include="Assets\img\btn_help.png" />
+    <Image Include="Assets\Img\btn_pause.png" />
     <Image Include="Assets\img\btn_play.png" />
     <Image Include="Assets\img\btn_setting.png" />
     <Image Include="Assets\img\btn_start.png" />
@@ -138,13 +139,16 @@
     <Image Include="Assets\img\house.png" />
     <Image Include="Assets\img\leaf.png" />
     <Image Include="Assets\img\linda_brave.png" />
+    <Image Include="Assets\Img\linda_question.png" />
     <Image Include="Assets\img\linda_scary.png" />
     <Image Include="Assets\img\main.png" />
     <Image Include="Assets\img\MainMenu_board.png" />
     <Image Include="Assets\img\Main_bg.png" />
     <Image Include="Assets\img\monster.png" />
+    <Image Include="Assets\Img\pause_bg.png" />
     <Image Include="Assets\Img\Plants\gr_1.png" />
     <Image Include="Assets\Img\Plants\plants.png" />
+    <Image Include="Assets\Img\pot.png" />
     <Image Include="Assets\img\score_board.png" />
     <Image Include="Assets\img\SelectBtn_1.png" />
     <Image Include="Assets\img\SelectBtn_2.png" />
@@ -155,6 +159,7 @@
     <Image Include="Assets\img\SelectMenu_board.png" />
     <Image Include="Assets\img\shelf.png" />
     <Image Include="Assets\Img\stars.png" />
+    <Image Include="Assets\Img\str_pause.png" />
     <Image Include="Assets\img\str_plan.png" />
     <Image Include="Assets\img\str_title.png" />
     <Image Include="Assets\img\tools_desk.png" />
@@ -174,7 +179,7 @@
     <ClInclude Include="Classes\AppDelegate.h" />
     <ClInclude Include=".\cocos2dorig.h" />
     <ClInclude Include="Classes\Effects.h" />
-    <ClInclude Include="Classes\EndStory.h" />
+    <ClInclude Include="Classes\GameControl.h" />
     <ClInclude Include="Classes\GameManage.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
@@ -316,7 +321,7 @@
     <ClCompile Include="Classes\AppDelegate.cpp" />
     <ClCompile Include=".\cocos2dorig.cpp" />
     <ClCompile Include="Classes\Effects.cpp" />
-    <ClCompile Include="Classes\EndStory.cpp" />
+    <ClCompile Include="Classes\GameControl.cpp" />
     <ClCompile Include="Classes\GameManage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>

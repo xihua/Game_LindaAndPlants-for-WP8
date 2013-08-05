@@ -1,4 +1,4 @@
-#ifndef __Game_Manage_H__
+ï»¿#ifndef __Game_Manage_H__
 #define __Game_Manage_H__
 
 #include "cocos2d.h"
@@ -8,12 +8,19 @@
 #include <memory>
 #include <vector>
 
+#define GB_X gm->Gboard.x
+#define GB_Y gm->Gboard.y
+#define GB_W gm->Gboard.width
+#define GB_H gm->Gboard.height
+#define ROW_1 gm->Gboard.rowOneItemPixel
+#define COL_1 gm->Gboard.colOneItemPixel
+
 
 struct GameBoard{
 	float x,y,width,height;
 	float rowOneItemPixel,colOneItemPixel;
 };
-//GBoardÊÇ½á¹¹Ìå±äÁ¿
+//GBoardæ˜¯ç»“æ„ä½“å˜é‡
 
  struct Cell{
 	int rowNo,colNo;
@@ -32,7 +39,7 @@ public:
 const int ITEMSROW=5,ITEMSCOL=8;
 
 struct GameData{
-	bool playInit;//ÊÇ·ñµÚÒ»´ÎÍæ´Ë¹Ø
+	bool playInit;//æ˜¯å¦ç¬¬ä¸€æ¬¡ç©æ­¤å…³
 	int gameScore,gameLevel;
 	//int savedItems[ITEMSROW][ITEMSCOL];
 };
@@ -57,9 +64,9 @@ public:
 	int ifVerSame(CurItem itm,int id);
 	bool ifCrossSame(CurItem itm,bool setZero=true);
 	bool isSwapItem(CurItem tmpCItem,CurItem tmpNItem,bool setZero=true);
-	int scanAll();//±éÀúÈı¸öÏàÍ¬
+	int scanAll();//éå†ä¸‰ä¸ªç›¸åŒ
 	bool isMovable();
-	bool updateSame();//±éÀú0Ïû³ı²¢Ìî³ä
+	bool updateSame();//éå†0æ¶ˆé™¤å¹¶å¡«å……
 };
 
 #endif 

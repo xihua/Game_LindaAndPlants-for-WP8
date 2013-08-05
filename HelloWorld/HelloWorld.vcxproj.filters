@@ -151,6 +151,21 @@
     <Image Include="Assets\Img\stars.png">
       <Filter>Assets\img</Filter>
     </Image>
+    <Image Include="Assets\Img\linda_question.png">
+      <Filter>Assets\img</Filter>
+    </Image>
+    <Image Include="Assets\Img\pause_bg.png">
+      <Filter>Assets\img</Filter>
+    </Image>
+    <Image Include="Assets\Img\pot.png">
+      <Filter>Assets\img</Filter>
+    </Image>
+    <Image Include="Assets\Img\str_pause.png">
+      <Filter>Assets\img</Filter>
+    </Image>
+    <Image Include="Assets\Img\btn_pause.png">
+      <Filter>Assets\img</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -164,9 +179,6 @@
     <ClCompile Include="Classes\MainMenu.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Classes\EndStory.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Classes\SelectMenu.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -177,6 +189,9 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Classes\Effects.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\GameControl.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -576,9 +591,6 @@
     <ClInclude Include="Classes\MainMenu.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Classes\EndStory.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\SelectMenu.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -589,6 +601,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Classes\Effects.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\GameControl.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

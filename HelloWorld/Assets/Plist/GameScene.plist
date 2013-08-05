@@ -59,6 +59,29 @@
 		</array>
 		</dict>
   
+		 <key>pause</key>
+		<array>
+		<string>Img/pause_bg.png</string>
+		<string>Img/str_pause.png</string>
+		<string>Img/linda_question.png</string>
+		 <string>Img/pot.png</string>
+		 </array>
+  
+		<key>pause_pos</key>
+		<array>
+		<string>{0.5,0.5}</string>
+		<string>{0.5,0.5}</string>
+		<string>{0.8,0.2}</string>
+		<string>{0.8,0.4}</string>
+		</array>
+
+		<key>pause_scale</key>
+		<array>
+			<string>1</string>
+			<string>1</string>
+			<string>1</string>
+			<string>1</string>
+		</array>
   
 </dict>
 </plist>

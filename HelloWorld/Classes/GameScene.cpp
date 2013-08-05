@@ -4,6 +4,7 @@
 #include "SelectMenu.h"
 #include "GameManage.h"
 #include "Effects.h"
+#include "GameControl.h"
 
 #include "CCCommon.h"
 #include "BasicLoader.h"
@@ -104,8 +105,8 @@ bool GameScene::init()
 
 		//图片的载入
 
-		picture_array = (CCArray*)plistDic->objectForKey("picture");
-		point_array = (CCArray*)plistDic->objectForKey("point");
+		picture_array =AR_FM_PL("picture");
+		point_array = AR_FM_PL("point");
 		//CCArray* scale_array = (CCArray*)plistDic->objectForKey("scale");
 		for (int i=0;i<picture_array->count();i++)
 		{
@@ -122,6 +123,7 @@ bool GameScene::init()
 
 			this->addChild(sprite,1);
 		}	
+
 
 		//游戏的载入
 		//plistDic = CCDictionary::createWithContentsOfFile("Plist/Level/l_0.plist");
@@ -160,6 +162,7 @@ bool GameScene::init()
 		pLabel->setColor(ccc3(60, 180, 150));
 		this->addChild(pLabel, 10,1001);
 
+
 		//加入触摸层
 		TouchLayer *tLayer=TouchLayer::create();
 		tLayer->setIsRelativeAnchorPoint(true);
@@ -190,7 +193,7 @@ void GameScene::singleTouchEnd(){
 	//Effects *ge=Effects ::GetInstance();
 	//ge->popEffect->setAutoRemoveOnFinish(true);	
 	//this->addChild(ge->popEffect,10);
-	//ge->popEffect->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*(gm->NItem.colNo+.5),gm->Gboard.y+gm->Gboard.rowOneItemPixel*(gm->NItem.rowNo+.5)));
+	//ge->popEffect->setPosition(ccp(gm->Gboard.x+COL_1*(gm->NItem.colNo+.5),gm->Gboard.y+ROW_1*(gm->NItem.rowNo+.5)));
 	//ge->popEffect->retain();
 
 	CCParticleSystem* popEffect = CCParticleFlower::create();
@@ -201,7 +204,7 @@ void GameScene::singleTouchEnd(){
 	popEffect->setEmissionRate(100);
 	popEffect->setPosVar(ccp(5,5));
 	this->addChild(popEffect,10);
-	popEffect->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*(gm->NItem.colNo+.5),gm->Gboard.y+gm->Gboard.rowOneItemPixel*(gm->NItem.rowNo+.5)));
+	popEffect->setPosition(ccp(gm->Gboard.x+COL_1*(gm->NItem.colNo+.5),gm->Gboard.y+ROW_1*(gm->NItem.rowNo+.5)));
 	
 	//得分更新
 	CCString *str=CCString::createWithFormat("%d",gm->Gdata.gameScore);
@@ -219,7 +222,9 @@ void GameScene::singleTouchMove(){
 }
 
 void GameScene::pauseGame(CCObject *sender){
-	CCDirector::sharedDirector()->pause();
+	//CCDirector::sharedDirector()->pause();
+	PauseLayer *pauLayer=PauseLayer::create();
+	this->addChild(pauLayer,15,1002);
 }
 
 void GameScene::backGame(CCObject *sender){
@@ -238,7 +243,7 @@ void GameScene::initItem(){
 			CCSprite* sprite=CCSprite::createWithSpriteFrameName(str->getCString());
 			//CCSprite* sprite = CCSprite::create(str->getCString());
 			sprite->setAnchorPoint(ccp(0,0));
-			sprite->setPosition(ccp(gm->Gboard.x+gm->Gboard.colOneItemPixel*j,gm->Gboard.y+gm->Gboard.rowOneItemPixel*i));
+			sprite->setPosition(ccp(gm->Gboard.x+COL_1*j,gm->Gboard.y+ROW_1*i));
 			sprite->setScale(0.6);
 			this->addChild(sprite,5,i*ITEMSCOL+j+1);
 			//CCLog("%d,%dItem:%d",i,j,i*ITEMSROW+j+1);

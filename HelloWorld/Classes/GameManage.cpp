@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CCCommon.h"
 #include <vector>
 #include <queue>
@@ -10,9 +10,17 @@
 using namespace cocos2d;
 using std::queue;
 using namespace CocosDenshion;
+//
+//void pScreen(){
+//		 for(int i=ITEMSROW-1;i>=0;i--)
+//		 for(int j=0;j<ITEMSCOL;j++){
+//			 cout<<Items[i][j]<<" ";
+//			 if((j+1)%ITEMSCOL==0)cout<<endl;
+//		 }
+//}
 
 static GameManage* hGameManage = NULL;
-GameManage*  GameManage::GetInstance()//»ñµÃµ±Ç°µÄGamaMangeÊµÀı
+GameManage*  GameManage::GetInstance()//è·å¾—å½“å‰çš„GamaMangeå®ä¾‹
 {
 	if (hGameManage == NULL)
 		hGameManage = new GameManage();
@@ -24,13 +32,13 @@ GameManage::GameManage()
 {
 	CCSize size=CCDirector::sharedDirector()->getWinSize();
 
-	//³õÊ¼»¯itemsÊı×é
+	//åˆå§‹åŒ–itemsæ•°ç»„
 	//Items[3][3]={{1,2,1},{2,1,2},{1,2,1}};
 	for(int i=0;i<ITEMSROW;i++) 
 		for(int j=0;j<ITEMSCOL;j++) Items[i][j]=1;
 	//Items[0][2]=2;
 
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	NItem.rowNo=NItem.colNo=0;
 	NItem.befVId=NItem.befHId=-1;			
 	NItem.aftVId=NItem.aftHId=1;
@@ -40,25 +48,25 @@ GameManage::GameManage()
 	CItem.befVId=CItem.befHId=-1;			
 	CItem.aftVId=CItem.aftHId=1;
 	CItem.same=0;
-	//³õÊ¼»¯gameBoard
+	//åˆå§‹åŒ–gameBoard
 	Gboard.x=size.width*.255;Gboard.y=size.height*.3;
 	Gboard.colOneItemPixel=Gboard.rowOneItemPixel=60.0f;
 	Gboard.width= Gboard.colOneItemPixel*ITEMSCOL;
 	Gboard.height= Gboard.rowOneItemPixel*ITEMSROW;
-	//³õÊ¼»¯GameData
+	//åˆå§‹åŒ–GameData
 	Gdata.gameLevel=1;
 	Gdata.gameScore=0;
 	Gdata.playInit=1;
 
 }
-void GameManage::genItems(){//Ëæ»úÉú³ÉÊı×é
+void GameManage::genItems(){//éšæœºç”Ÿæˆæ•°ç»„
 	do{
 		for(int i=0;i<ITEMSROW;i++) 
-			for(int j=0;j<ITEMSCOL;j++) 
-			{Items[i][j]=(int)(9*CCRANDOM_0_1())+1;/*CCLog("%d,%d:%d",i,j,Items[i][j]);*/}
+			for(int j=0;j<ITEMSCOL;j++) //CCRANDOM_0_1 å·¦é—­å³å¼€
+			{Items[i][j]=(int)(10*CCRANDOM_0_1())+1;/*CCLog("%d,%d:%d",i,j,Items[i][j]);*/}
 			while(scanAll());	
 	}while(!isMovable());
-	//while(gm->scanAll());//Éú³ÉÃ»ÓĞÈı¸öÏàÍ¬µÄÆåÅÌ
+	//while(gm->scanAll());//ç”Ÿæˆæ²¡æœ‰ä¸‰ä¸ªç›¸åŒçš„æ£‹ç›˜
 	//if(isMovable()) CCLog("movable");
 	//else CCLog("regen");
 }
@@ -69,7 +77,7 @@ void GameManage::genItems(){//Ëæ»úÉú³ÉÊı×é
 	 if(itm.befVId==-1 ){itm.befVId=ifVerSame(itm,itm.befVId);}
 	 if(itm.aftVId==1)	{itm.aftVId=ifVerSame(itm,itm.aftVId);}
 	 //cout<<jud; 		
-		 if(((itm.befHId+itm.aftHId)>=2 )|| ((itm.befVId+itm.aftVId)>=2)){//ÏàÁÚ´óÓÚÈı¸öÏàÍ¬ÔòÎªÁã
+		 if(((itm.befHId+itm.aftHId)>=2 )|| ((itm.befVId+itm.aftVId)>=2)){//ç›¸é‚»å¤§äºä¸‰ä¸ªç›¸åŒåˆ™ä¸ºé›¶
 			 if(setZero==true){
 			 for(;itm.aftHId>0;itm.aftHId--) Items[itm.rowNo][itm.colNo+itm.aftHId]=0;
 			 for(;itm.befHId>0;itm.befHId--) Items[itm.rowNo][itm.colNo-itm.befHId]=0;
@@ -84,13 +92,13 @@ bool GameManage::updateSame(){
 
 	queue<int> sq;
 	for(int i=0;i<ITEMSROW;i++)
-		for(int j=0;j<ITEMSCOL;j++){//±éÀú0
+		for(int j=0;j<ITEMSCOL;j++){//éå†0
 				if(Items[i][j]==0) {
 					/*cout<<endl<<"i,j"<<i<<" "<<j;*/
-					int sameC=0;//Æ«ÒÆÁ¿
+					int sameC=0;//åç§»é‡
 					
 					for(int r=1;r<ITEMSROW;r++){
-					if(Items[i+r][j]==0){//ÁĞÏò±éÀú0
+					if(Items[i+r][j]==0){//åˆ—å‘éå†0
 						sameC++;}
 					else break;
 					}
@@ -98,19 +106,19 @@ bool GameManage::updateSame(){
 					//sq.count=-1;
 					for(int r=1;i+sameC+r<ITEMSROW;r++){
 						sq.push(Items[i+sameC+r][j]);
-						//++sq.count;//Ôİ´æÈë¶ÓÁĞ
+						//++sq.count;//æš‚å­˜å…¥é˜Ÿåˆ—
 						//sq.row[sq.count]=Items[i+sameC+r][j];
 						}
 					for(int r=0;r<sameC+1;r++){
 						sq.push(rand()%9+1);
-						//++sq.count;//²¹³äsameC+1¸öËæ»úÊıÈë¶ÓÁĞ
+						//++sq.count;//è¡¥å……sameC+1ä¸ªéšæœºæ•°å…¥é˜Ÿåˆ—
 						//sq.row[sq.count]=rand()%9+1;
 						}
 					//cout<<endl;
 					// for(int r=0;r<=sq.count;r++){
 					//	 cout<<sq.row[sq.count]<<" ";
 					// }
-					//È¡³ö¶ÓÁĞ ²¢ÏÂÒÆ
+					//å–å‡ºé˜Ÿåˆ— å¹¶ä¸‹ç§»
 					for(int r=0;i+r<ITEMSROW;r++){
 						Items[i+r][j]=sq.front();sq.pop();}
 						//Items[i+r][j]=sq.row[r];
@@ -119,11 +127,11 @@ bool GameManage::updateSame(){
 	 return 1;
 }
 int GameManage::ifHorSame(CurItem itm,int id){	
-	 int i=1,sameC=0;//sameCÎªÆ«ÒÆÁ¿
+	 int i=1,sameC=0;//sameCä¸ºåç§»é‡
 	 do{		 
 		 if(itm.same==Items[itm.rowNo][itm.colNo+id*i])
 		 {sameC++;
-		 //if(sameC>=2){Items[itm.rowNo][itm.colNo+id*i]=0;//ÏàÁÚ´óÓÚÈı¸öÏàÍ¬ÔòÎªÁã
+		 //if(sameC>=2){Items[itm.rowNo][itm.colNo+id*i]=0;//ç›¸é‚»å¤§äºä¸‰ä¸ªç›¸åŒåˆ™ä¸ºé›¶
 		 //Items[itm.rowNo][itm.colNo+1]=Items[itm.rowNo][itm.colNo+2]=0;}
 		 i++;}
 		 else break;
@@ -159,33 +167,17 @@ bool GameManage::isSwapItem(CurItem tmpCItem,CurItem tmpNItem,bool setZero){
 	if(ifCrossSame(tmpCItem,setZero)||ifCrossSame(tmpNItem,setZero)){ 
 		return 1;}
 	else {
-		Items[tmpCItem.rowNo][tmpCItem.colNo]=cTmp;//½»»»»ØÈ¥
+		Items[tmpCItem.rowNo][tmpCItem.colNo]=cTmp;//äº¤æ¢å›å»
 		Items[tmpNItem.rowNo][tmpNItem.colNo]=nTmp;
 		return 0;
 	}
-	//int cTmp,nTmp;
-	//cTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
-	//nTmp=Items[tmpCItem.rowNo][tmpCItem.colNo];
-	//Items[tmpCItem.rowNo][tmpCItem.colNo]=Items[tmpNItem.rowNo][tmpNItem.colNo];
-	//Items[tmpNItem.rowNo][tmpNItem.colNo]=cTmp;
-	//
-	//tmpCItem.same=Items[tmpCItem.rowNo][tmpCItem.colNo];
-	//tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
-	////CCLog("swap%d,%d:%d",tmpCItem.rowNo,tmpCItem.colNo,tmpCItem.same);
-	////CCLog("and%d,%d:%d",tmpNItem.rowNo,tmpNItem.colNo,tmpNItem.same);
-	//if(ifCrossSame(tmpCItem,setZero)||ifCrossSame(tmpNItem,setZero)){ 
-	//	return 1;}
-	//else {
-	//	Items[tmpCItem.rowNo][tmpCItem.colNo]=cTmp;//½»»»»ØÈ¥
-	//	Items[tmpNItem.rowNo][tmpNItem.colNo]=nTmp;
-	//	return 0;
-	//}
 }
+
 int GameManage::scanAll(){
 	CurItem tmpItem;
 	 queue<Cell>sq;			
 	tmpItem.aftVId=tmpItem.aftHId=1;
-	//±éÀúÕû¸öGameBoard
+	//éå†æ•´ä¸ªGameBoard
 	 for(int i=0;i<ITEMSROW;i++)
 		 for(int j=0;j<ITEMSCOL;j++){			 
 			tmpItem.rowNo=i;	tmpItem.colNo=j;
@@ -193,18 +185,18 @@ int GameManage::scanAll(){
 			int HSame=ifHorSame(tmpItem,tmpItem.aftHId);
 			int VSame=ifVerSame(tmpItem,tmpItem.aftVId);			
 			if(VSame>=2){					
-				for(int r=1;r<=VSame;r++) {//×İÏò´óÓÚÈı¸öÏàÍ¬ÔòÈë¶Ó
+				for(int r=1;r<=VSame;r++) {//çºµå‘å¤§äºä¸‰ä¸ªç›¸åŒåˆ™å…¥é˜Ÿ
 					Cell tmpC;tmpC.rowNo=i+r;tmpC.colNo=j;sq.push(tmpC);}
 				}
 			if(HSame>=2){	
-				for(int c=0;c<=HSame;c++){//ºáÏò´óÓÚÈı¸öÏàÍ¬ÔòÈë¶Ó
+				for(int c=0;c<=HSame;c++){//æ¨ªå‘å¤§äºä¸‰ä¸ªç›¸åŒåˆ™å…¥é˜Ÿ
 					Cell tmpC;tmpC.rowNo=i;tmpC.colNo=j+c;sq.push(tmpC);}
 				}
 		}
 	 if(sq.empty()) return 0;
 	 else {
 		 int sqCount=0;
-	//µ¯³ö¶ÓÁĞ£¬²¢ÖÃÎªÁã
+	//å¼¹å‡ºé˜Ÿåˆ—ï¼Œå¹¶ç½®ä¸ºé›¶
 	 while(!sq.empty()){
 		Cell tmpC=sq.front();
 		//cout<<"tmpC:"<<tmpC.rowNo<<"-"<<tmpC.colNo;
@@ -220,29 +212,34 @@ bool GameManage::isMovable(){
 	tmpCItem.befVId=tmpCItem.befHId=tmpNItem.befVId=tmpNItem.befHId=-1;
 	tmpCItem.aftVId=tmpCItem.aftHId=tmpNItem.aftVId=tmpNItem.aftHId=1;
 
-	//±éÀúÕû¸öGameBoard
+	//éå†æ•´ä¸ªGameBoard
 	 for(int i=0;i<ITEMSROW;i++)
 		 for(int j=0;j<ITEMSCOL;j++){
 			 //CCLog("%d,%d",i,j);
 			 tmpCItem.rowNo=i;tmpCItem.colNo=j;
 			 tmpCItem.same=Items[tmpCItem.rowNo][tmpCItem.colNo];
  			
-			 tmpNItem.rowNo=i;tmpNItem.colNo=j+1;//ºáÏò½»»»
+			 tmpNItem.rowNo=i;tmpNItem.colNo=j+1;//æ¨ªå‘äº¤æ¢
 			 tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
 			 
 			 //printf("HorN%d,%d:%d\n",tmpNItem.rowNo,tmpNItem.colNo, tmpNItem.same);
-			 if(isSwapItem(tmpCItem,tmpNItem,false) && tmpNItem.colNo<ITEMSCOL)//¼ì²â½»»»ÊÇ·ñ³É¹¦
-					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//½»»»»ØÈ¥
-					CCLog("%d,%d,Hor success\n",tmpCItem.rowNo,tmpCItem.colNo);
+			 //CCLog("Hor%d=%d",Items[tmpCItem.rowNo][tmpCItem.colNo],tmpCItem.same);
+			 //bug#1 åº”è¯¥å…ˆåˆ¤æ–­è¾¹ç•Œï¼Œå¦åˆ™ååˆ¤æ–­è¾¹ç•Œ,isSwapå·²äº¤æ¢ä½†ä¸ºè¿›å…¥ifè¯­å¥ï¼Œä¸èƒ½äº¤æ¢å›å»
+			 if(tmpNItem.colNo<ITEMSCOL && isSwapItem(tmpCItem,tmpNItem,false) )//æ£€æµ‹äº¤æ¢æ˜¯å¦æˆåŠŸ
+					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//äº¤æ¢å›å»
+					CCLog("%d,%d:%d=%dHor success",tmpCItem.rowNo,tmpCItem.colNo,Items[tmpCItem.rowNo][tmpCItem.colNo],tmpCItem.same);
+					CCLog("%d,%d:%d\n",tmpNItem.rowNo,tmpNItem.colNo,Items[tmpNItem.rowNo][tmpNItem.colNo]);
 					// printf("%d,%d,Hor success\n",tmpCItem.rowNo,tmpCItem.colNo);
 					 return 1;}	
 
-			tmpNItem.rowNo=i+1;tmpNItem.colNo=j;//×İÏò½»»»
+			tmpNItem.rowNo=i+1;tmpNItem.colNo=j;//çºµå‘äº¤æ¢
 			 tmpNItem.same=Items[tmpNItem.rowNo][tmpNItem.colNo];
 			 //printf("VerN%d,%d:%d\n",tmpNItem.rowNo,tmpNItem.colNo, tmpNItem.same);
-			 if(isSwapItem(tmpCItem,tmpNItem,false) && tmpNItem.rowNo<ITEMSROW)//¼ì²â½»»»ÊÇ·ñ³É¹¦
-					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//½»»»»ØÈ¥
-					CCLog("%d,%d,Vor success\n",tmpCItem.rowNo,tmpCItem.colNo);
+			 //CCLog("Ver%d=%d",Items[tmpCItem.rowNo][tmpCItem.colNo],tmpCItem.same);
+			 if( tmpNItem.rowNo<ITEMSROW  && isSwapItem(tmpCItem,tmpNItem,false))//æ£€æµ‹äº¤æ¢æ˜¯å¦æˆåŠŸ
+					{swap(Items[tmpCItem.rowNo][tmpCItem.colNo],Items[tmpNItem.rowNo][tmpNItem.colNo]);//äº¤æ¢å›å»
+					CCLog("%d,%d:%d=%dVer success",tmpCItem.rowNo,tmpCItem.colNo,Items[tmpCItem.rowNo][tmpCItem.colNo],tmpCItem.same);
+					CCLog("%d,%d:%d\n",tmpNItem.rowNo,tmpNItem.colNo,Items[tmpNItem.rowNo][tmpNItem.colNo]);
 					//printf("%d,%d,Vor success\n",tmpCItem.rowNo,tmpCItem.colNo);
 				return 1;}	
 		 }

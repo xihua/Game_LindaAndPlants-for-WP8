@@ -23,7 +23,6 @@
 #include "cocos2d.h"
 #include "Classes\Mainmenu.h"
 
-
 #include "CCEGLView.h"
 USING_NS_CC;
 
@@ -80,6 +79,7 @@ bool AppDelegate::initInstance()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
+
 	// initialize director
 	CCDirector *pDirector = CCDirector::sharedDirector();
 
