@@ -236,6 +236,7 @@ void GameScene::initItem(){
 	if(gm->Gdata.playInit) gm->genItems();//是否第一次玩此关
 	///while(gm->scanAll());//生成没有三个相同的棋盘
 	//while(!gm->isMovable()) gm->genItems();//是否洗牌
+	//gm->pScreen();//test
 	for(int i=0;i<ITEMSROW;i++)
 		for(int j=0;j<ITEMSCOL;j++){
 			CCString *str=CCString::createWithFormat("gr_%d.png", gm->Items[i][j]);

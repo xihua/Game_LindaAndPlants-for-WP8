@@ -9,14 +9,21 @@
 #include "GameManage.h"
 using namespace cocos2d;
 using std::queue;
+using std::string;
 using namespace CocosDenshion;
-//
-//void pScreen(){
-//		 for(int i=ITEMSROW-1;i>=0;i--)
-//		 for(int j=0;j<ITEMSCOL;j++){
-//			 cout<<Items[i][j]<<" ";
-//			 if((j+1)%ITEMSCOL==0)cout<<endl;
-//		 }
+
+//void GameManage::pScreen(){
+//	
+//	 for(int i=ITEMSROW-1;i>=0;i--){
+//		 string str;
+//		for(int j=0;j<ITEMSCOL;j++){
+//			char s[50];
+//			sprintf(s," %d",Items[i][j]);
+//			str.append(s);
+//		}
+//		CCLog(str.c_str());
+//	 }
+//	 CCLog("");
 //}
 
 static GameManage* hGameManage = NULL;
@@ -71,21 +78,40 @@ void GameManage::genItems(){//随机生成数组
 	//else CCLog("regen");
 }
 
- bool GameManage::ifCrossSame(CurItem itm,bool setZero){	 
+ bool GameManage::ifCrossSame(CurItem itm,bool setZero){
+	 int sameFlag=0;
 	 if(itm.befHId==-1  ){itm.befHId=ifHorSame(itm,itm.befHId);}
 	 if(itm.aftHId==1)	{itm.aftHId=ifHorSame(itm,itm.aftHId);}
 	 if(itm.befVId==-1 ){itm.befVId=ifVerSame(itm,itm.befVId);}
 	 if(itm.aftVId==1)	{itm.aftVId=ifVerSame(itm,itm.aftVId);}
-	 //cout<<jud; 		
-		 if(((itm.befHId+itm.aftHId)>=2 )|| ((itm.befVId+itm.aftVId)>=2)){//相邻大于三个相同则为零
-			 if(setZero==true){
+	 //cout<<jud; 	
+
+	if((itm.befHId+itm.aftHId)>=2 ){
+		 sameFlag=1;
+		 if(setZero==true){
 			 for(;itm.aftHId>0;itm.aftHId--) Items[itm.rowNo][itm.colNo+itm.aftHId]=0;
 			 for(;itm.befHId>0;itm.befHId--) Items[itm.rowNo][itm.colNo-itm.befHId]=0;
+		 }
+	 }
+	 if((itm.befVId+itm.aftVId)>=2 ){
+		 sameFlag=1;
+		 if(setZero==true){
 			 for(;itm.aftVId>0;itm.aftVId--) Items[itm.rowNo+itm.aftVId][itm.colNo]=0;
-			 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;			 
-			 Items[itm.rowNo][itm.colNo]=0;}
-		return 1;}
-	 else return 0;
+			 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;
+		 }
+	 }
+	 if(setZero && sameFlag)Items[itm.rowNo][itm.colNo]=0;
+	 return sameFlag;
+	 //bug#2 不能简单用逻辑或,比如横向>2,纵向为1;纵向也会被置零
+	 // if(((itm.befHId+itm.aftHId)>=2 )|| ((itm.befVId+itm.aftVId)>=2)){//相邻大于三个相同则为零
+		//	 if(setZero==true){
+		//	 for(;itm.aftHId>0;itm.aftHId--) Items[itm.rowNo][itm.colNo+itm.aftHId]=0;
+		//	 for(;itm.befHId>0;itm.befHId--) Items[itm.rowNo][itm.colNo-itm.befHId]=0;
+		//	 for(;itm.aftVId>0;itm.aftVId--) Items[itm.rowNo+itm.aftVId][itm.colNo]=0;
+		//	 for(;itm.befVId>0;itm.befVId--) Items[itm.rowNo-itm.befVId][itm.colNo]=0;			 
+		//	 Items[itm.rowNo][itm.colNo]=0;}
+		//return 1;}
+	 //else return 0;
  }
 
 bool GameManage::updateSame(){
@@ -128,27 +154,30 @@ bool GameManage::updateSame(){
 }
 int GameManage::ifHorSame(CurItem itm,int id){	
 	 int i=1,sameC=0;//sameC为偏移量
-	 do{		 
+	 while(0<=itm.colNo+id*i && itm.colNo+id*i<ITEMSCOL){
 		 if(itm.same==Items[itm.rowNo][itm.colNo+id*i])
-		 {sameC++;
-		 //if(sameC>=2){Items[itm.rowNo][itm.colNo+id*i]=0;//相邻大于三个相同则为零
-		 //Items[itm.rowNo][itm.colNo+1]=Items[itm.rowNo][itm.colNo+2]=0;}
-		 i++;}
+		 {sameC++;i++;}
 		 else break;
-	}while(0<=itm.colNo+id*i && itm.colNo+id*i<ITEMSCOL);
+	 }
+	 //bug#3 边界问题：先判断在进入循环，否则可能数组访问越界
+	// do{		 
+	//	 if(itm.same==Items[itm.rowNo][itm.colNo+id*i])
+	//	 {sameC++;
+	//	 //if(sameC>=2){Items[itm.rowNo][itm.colNo+id*i]=0;//相邻大于三个相同则为零
+	//	 //Items[itm.rowNo][itm.colNo+1]=Items[itm.rowNo][itm.colNo+2]=0;}
+	//	 i++;}
+	//	 else break;
+	//}while(0<=itm.colNo+id*i && itm.colNo+id*i<ITEMSCOL);
 	 return sameC;
 }
 
 int GameManage::ifVerSame(CurItem itm,int id){	
 	 int i=1,sameC=0;
-	 do{		 
+	 while(0<=itm.rowNo+id*i && itm.rowNo+id*i<ITEMSROW){
 		 if(itm.same==Items[itm.rowNo+id*i][itm.colNo])
-		 {sameC++;
-/*		 if(sameC>=2){Items[itm.rowNo+id*i][itm.colNo]=0;
-		 Items[itm.rowNo+1][itm.colNo]=Items[itm.rowNo+2][itm.colNo]=0;;}	*/	 
-		 i++;}
+		 {sameC++;i++;}
 		 else break;
-	}while(0<=itm.rowNo+id*i && itm.rowNo+id*i<ITEMSROW);
+	 }
 	 return sameC;
 }
 

@@ -67,6 +67,7 @@ public:
 	int scanAll();//遍历三个相同
 	bool isMovable();
 	bool updateSame();//遍历0消除并填充
+	//void pScreen();
 };
 
 #endif 
