@@ -166,6 +166,15 @@
     <Image Include="Assets\Img\btn_pause.png">
       <Filter>Assets\img</Filter>
     </Image>
+    <Image Include="Assets\Img\GameStr_3.png">
+      <Filter>Assets\img</Filter>
+    </Image>
+    <Image Include="Assets\Img\GameStr_1.png">
+      <Filter>Assets\img</Filter>
+    </Image>
+    <Image Include="Assets\Img\GameStr_2.png">
+      <Filter>Assets\img</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

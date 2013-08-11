@@ -18,6 +18,9 @@ using namespace Windows::Foundation;
 using namespace Windows::Devices::Sensors;
 using namespace CocosDenshion;
 
+#define TagScore 1001
+#define TagStr 1002
+//const char gameStr[3][50]={"好眼力！","这也能看到?!","洗牌"};
 
 GameScene::~GameScene()
 {
@@ -155,12 +158,13 @@ bool GameScene::init()
 		//游戏Items载入
 		initItem();
 
-		//得分的载入
+		//得分和文字的载入
 		CCString *str=CCString::createWithFormat("%d",gm->Gdata.gameScore);
 		CCLabelTTF* pLabel = CCLabelTTF::create(str->getCString(), "msyh", 30);
 		pLabel->setPosition( ccp(size.width * 0.15, size.height * 0.85) );
 		pLabel->setColor(ccc3(60, 180, 150));
-		this->addChild(pLabel, 10,1001);
+		this->addChild(pLabel, 10,TagScore);
+		//updateStr(1);
 
 
 		//加入触摸层
@@ -188,6 +192,8 @@ void GameScene::singleTouchEnd(){
 	GameManage * gm=GameManage::GetInstance();
 	// CCSprite* CurSp = (CCSprite*)this->getChildByTag(gm->CItem.colNo*3+gm->CItem.colNo+1);
 	SimpleAudioEngine::sharedEngine()->playEffect("Assets\\Audio\\change.wav",false);
+
+
 
 	//粒子效果有问题
 	//Effects *ge=Effects ::GetInstance();
@@ -217,7 +223,36 @@ void GameScene::singleTouchEnd(){
 
 }
 
-void GameScene::singleTouchMove(){
+void GameScene::singleTouchMove(int Move_dir,int Move_rbk){
+	GameManage * gm=GameManage::GetInstance();	
+	CCActionInterval *Back=NULL,*NBack=NULL,*Move=NULL;
+	switch(Move_dir) 
+	{
+	case 1:Move=CCMoveBy::create(.2f,ccp(gm->Gboard.colOneItemPixel,0));break;//向右
+	case 2:Move=CCMoveBy::create(.2f,ccp(-gm->Gboard.colOneItemPixel,0));break;
+	case 3:Move=CCMoveBy::create(.2f,ccp(0,gm->Gboard.colOneItemPixel));break;//向下
+	case 4:Move=CCMoveBy::create(.2f,ccp(0,-gm->Gboard.colOneItemPixel));break;
+	}
+	
+	CCActionInterval* ca= CCEaseOut::create((CCActionInterval*)(Move->copy()->autorelease()), 1.0f);	
+	if(Move_rbk) Back=((CCActionInterval*)ca->copy())->reverse();
+	else {Back=((CCActionInterval*)Move->copy())->reverse();Back->setDuration(0);}
+
+	int i=gm->CItem.rowNo,j=gm->CItem.colNo;
+	CCSprite* Sp = (CCSprite*)this->getChildByTag(i*ITEMSCOL+j+1);
+	CCFiniteTimeAction* action= CCSequence::create(ca,Back,NULL); 
+	Sp->runAction((CCActionInterval*)action->copy()->autorelease());
+
+	i=gm->NItem.rowNo;j=gm->NItem.colNo;
+	Sp = (CCSprite*)this->getChildByTag(i*ITEMSCOL+j+1);
+	//Sp->runAction(ca->reverse());
+	ca= CCEaseOut::create((CCActionInterval*)(Move->reverse()->copy()->autorelease()), 1.0f);
+	//CCDelayTime* delayTime = CCDelayTime::create(0.5);
+    //CCFiniteTimeAction* callFunc = CCCallFunc::create(this, callfunc_selector(GameScene::singleTouchEnd));//序列加入此执行崩溃
+	if(Move_rbk) {NBack=((CCActionInterval*)ca->copy())->reverse();/*callFunc=NULL;*/}
+	else {NBack=(CCActionInterval*)Move->copy();NBack->setDuration(0);}
+	action= CCSequence::create(ca,NBack/*,callFunc*/,NULL); 
+	Sp->runAction(action);
 
 }
 
@@ -241,6 +276,7 @@ void GameScene::initItem(){
 		for(int j=0;j<ITEMSCOL;j++){
 			CCString *str=CCString::createWithFormat("gr_%d.png", gm->Items[i][j]);
 			//CCLog("%d,%dItem:%d",i,j,gm->Items[i][j]);
+			//CCMotionStreak *sprite=CCMotionStreak::create(2, 3, 32, ccGREEN,"");
 			CCSprite* sprite=CCSprite::createWithSpriteFrameName(str->getCString());
 			//CCSprite* sprite = CCSprite::create(str->getCString());
 			sprite->setAnchorPoint(ccp(0,0));
@@ -274,4 +310,28 @@ bool GameScene::updateItem(int tag,int pic){
 
 
 	return true;
+}
+void GameScene::updateStr(int type){
+	CCSize size=CCDirector::sharedDirector()->getWinSize();
+	CCString *str=CCString::createWithFormat("Img/GameStr_%d.png",type);
+	CCSprite* sprite=CCSprite::create(str->getCString());	
+	sprite->setPosition(ccp(size.width*0.8, size.height*0.05));
+	sprite->setScale(0.1);
+	this->addChild(sprite,10,TagStr);
+		CCActionInterval* MoveToM= CCMoveTo::create(.2f,ccp(size.width*0.7, size.height*.2));
+		CCActionInterval* ScB=CCScaleBy::create(.2f,4);		
+		CCDelayTime *waiting=CCDelayTime::create(.5);  
+		CCActionInterval* fX=CCFadeOut::create(0.5); 
+		CCActionInterval* move_ease_out = CCEaseOut::create((CCActionInterval*)(MoveToM->copy()->autorelease()), 2.0f);
+		CCActionInterval* Spa=CCSpawn::createWithTwoActions(move_ease_out,ScB);
+		
+		CCActionInterval* MoveToM2=CCMoveTo::create(.2f,ccp(size.width*0.7, size.height*.1));		
+		CCActionInterval* move_ease_out2 = CCEaseOut::create((CCActionInterval*)(MoveToM2->copy()->autorelease()), 2.0f);
+		CCActionInterval* Spa2=CCSpawn::createWithTwoActions(move_ease_out2,ScB);
+
+		CCFiniteTimeAction* action;
+		if(type==3) action= CCSequence::create(waiting,Spa2,fX,NULL);  //动画序列
+		else action= CCSequence::create(Spa,waiting,fX,NULL);
+		sprite->runAction(action);
+		//this->removeChild(sprite,false);
 }

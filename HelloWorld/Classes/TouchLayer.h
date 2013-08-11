@@ -13,7 +13,8 @@
 class TouchLayerDelegate{//´¥Ãş´úÀíÀà
 public:
 	virtual void singleTouchEnd()=0; 
-	virtual void singleTouchMove()=0; 
+	virtual void singleTouchMove(int Move_dir,int Move_rbk)=0; 
+	virtual void updateStr(int type)=0; 
 };
 
 

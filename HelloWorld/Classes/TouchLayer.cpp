@@ -88,6 +88,7 @@ void TouchLayer::ccTouchEnded(CCTouch* touch, CCEvent* event)
 	CCPoint curPixelPos=touch->getLocationInView();
 	curPixelPos=CCDirector::sharedDirector()->convertToGL(curPixelPos);
 	GameManage * gm=GameManage::GetInstance();
+	TouchLayerDelegate *tl=this->getDelegate();
 			//判断在GameBoard范围
 		float difWd =curPixelPos.x-  gm->Gboard.x;
 		float difHt =curPixelPos.y-  gm->Gboard.y;
@@ -101,19 +102,30 @@ void TouchLayer::ccTouchEnded(CCTouch* touch, CCEvent* event)
 			 if((difCol==0||difRow==0)&&(difCol!=difRow)&&(abs(difCol)==1||abs(difRow)==1)) {//是否相邻
 				// SimpleAudioEngine::sharedEngine()->playEffect("Assets\\Audio\\move.wav", false);
 				// gm->pScreen();//test
+				 int Move_dir;
+				 if(difCol) Move_dir= difCol<0?2:difCol;
+				 else Move_dir= difRow<0?4:3;
 				 if(gm->isSwapItem(gm->CItem,gm->NItem))//检测交换是否成功
 					{
 					//gm->pScreen();//test
-					gm->updateSame();gm->Gdata.gameScore+=10;//CCLog("swap success");
+					int flag=1;
+					gm->updateSame();gm->Gdata.gameScore+=10;
+					CCLog("swap success");
 					//gm->pScreen();//test
-					while(gm->scanAll()) {gm->Gdata.gameScore+=15;CCLog("Great!");}//连击加分	
+					while(gm->scanAll()) {gm->Gdata.gameScore+=15;
+					flag=2;CCLog("Great!");}//连击加分	
 					//gm->pScreen();//test
-					if(!(gm->isMovable())) {gm->genItems();CCLog("reset board!");}//洗牌
+					tl->updateStr(flag);
+					if(!(gm->isMovable())) {gm->genItems();
+					tl->updateStr(3);CCLog("reset board!");}//洗牌
 					//gm->pScreen();//test
+					this->getDelegate()->singleTouchMove(Move_dir,0);//move动画
 					this->getDelegate()->singleTouchEnd();
 					
 				 }
-				 else CCLog("swap fail");}
+				 else {CCLog("swap fail");
+				 this->getDelegate()->singleTouchMove(Move_dir,1);}
+			 }
 		}
 }
 

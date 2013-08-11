@@ -21,6 +21,7 @@ Effects::Effects()
 {
 	CCSize size=CCDirector::sharedDirector()->getWinSize();
 	GameManage * gm=GameManage::GetInstance();
+	AniPool=CCAnimationCache::sharedAnimationCache();
 
 	//消除的粒子效果
 	popEffect = CCParticleFlower::create();
@@ -31,12 +32,13 @@ Effects::Effects()
 	popEffect->setPosVar(ccp(5,5));
 
 	//移动的动画效果
-	CCMoveBy* MoveH= CCMoveBy::create(.1f,ccp(gm->Gboard.colOneItemPixel,0));
+	//CCActionInterval* = CCMoveBy::create(.1f,ccp(gm->Gboard.colOneItemPixel,0));
+	CCActionInterval* MoveH= CCEaseOut::create((CCActionInterval*)(CCMoveBy::create(.1f,ccp(gm->Gboard.colOneItemPixel,0))->copy()->autorelease()), 2.0f);
+	AniPool->addAnimation((CCAnimation*)MoveH,"Ani_Item_MoveH");
 	//CCDelayTime *waiting=CCDelayTime::create(0.2f);  
-	CCMoveBy* MoveV= CCMoveBy::create(.1f,ccp(0,gm->Gboard.rowOneItemPixel));
+	CCActionInterval* MoveV= CCMoveBy::create(.1f,ccp(0,gm->Gboard.rowOneItemPixel));
 	//CCFiniteTimeAction* action= CCSequence::create(MoveM,MoveL,NULL);  //动画序列
-	moveVerAni=(CCAction *)MoveV;  
-	moveHorAni=(CCAction *)MoveH;  
+
 }
 
 

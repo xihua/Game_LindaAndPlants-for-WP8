@@ -13,6 +13,5 @@ public:
 
 public:
 	cocos2d::CCParticleSystem*  popEffect;
-	cocos2d::CCAction*  moveVerAni;
-	cocos2d::CCAction*  moveHorAni;
+	cocos2d::CCAnimationCache*  AniPool;
 };

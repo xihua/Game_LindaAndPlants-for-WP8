@@ -134,6 +134,9 @@
     <Image Include="Assets\img\btn_play.png" />
     <Image Include="Assets\img\btn_setting.png" />
     <Image Include="Assets\img\btn_start.png" />
+    <Image Include="Assets\Img\GameStr_1.png" />
+    <Image Include="Assets\Img\GameStr_2.png" />
+    <Image Include="Assets\Img\GameStr_3.png" />
     <Image Include="Assets\img\Game_board.png" />
     <Image Include="Assets\Img\Game_board_bg.png" />
     <Image Include="Assets\img\house.png" />
@@ -336,10 +339,16 @@
   <ItemGroup>
     <None Include="Assets\Img\Plants\plants.plist">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </None>
     <None Include="Assets\plist\GameScene.plist">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <SubType>Designer</SubType>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </None>
     <None Include="Assets\Plist\Level\l_0.plist">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</DeploymentContent>
@@ -349,9 +358,15 @@
     </None>
     <None Include="Assets\plist\MainMenu.plist">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </None>
     <None Include="Assets\plist\SelectMenu.plist">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </None>
     <None Include="CCDrawingPixelShader.cso">
       <DeploymentContent>true</DeploymentContent>

@@ -32,11 +32,12 @@ public:
 
 	//void registerWithTouchDispatcher();
 	void singleTouchEnd(); 
-	void singleTouchMove(); 
+	void singleTouchMove(int Move_dir,int Move_rbk); 
 	void pauseGame(CCObject *sender);
 	void backGame(CCObject *sender);
 	void initItem();
 	bool updateItem(int tag,int pic);//Ë¢ÐÂÌî³äÍ¼Æ¬
+	void updateStr(int type);//Ë¢ÐÂÎÄ×Ö
 
 private: 
 	int SoundId;

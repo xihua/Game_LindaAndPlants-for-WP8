@@ -4,7 +4,7 @@
   <Languages xmlns="">
     <Language code="zh" />
   </Languages>
-  <App xmlns="" ProductID="{E0ED3292-F3AB-4D5F-B42C-396BD19504DE}" Title="LindaAndPlants" RuntimeType="Modern Native" Version="1.0.0.0" Genre="apps.normal" Author="Guanhua Zhu" Description="" Publisher="Penrod Nie" PublisherID="{38b9503d-0dc5-4f0b-8d79-4e86e49feeb5}">
+  <App xmlns="" ProductID="{E0ED3292-F3AB-4D5F-B42C-317BD11704DE}" Title="LindaAndPlants" RuntimeType="Modern Native" Version="1.0.0.0" Genre="apps.normal" Author="Guanhua Zhu" Description="" Publisher="Penrod Nie" PublisherID="{38b9503d-0dc5-4f0b-8d79-4e86e49feeb5}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
     </Capabilities>
