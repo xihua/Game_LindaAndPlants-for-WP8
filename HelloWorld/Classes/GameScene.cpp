@@ -206,8 +206,8 @@ void GameScene::singleTouchEnd(){
 	//popEffect->retain();
 	popEffect->setAutoRemoveOnFinish(true);	
 	popEffect->setTexture(CCTextureCache::sharedTextureCache()->addImage("Img/stars.png"));
-	popEffect->setDuration(.05);
-	popEffect->setEmissionRate(100);
+	popEffect->setDuration(.1);
+	popEffect->setEmissionRate(200);
 	popEffect->setPosVar(ccp(5,5));
 	this->addChild(popEffect,10);
 	popEffect->setPosition(ccp(gm->Gboard.x+COL_1*(gm->NItem.colNo+.5),gm->Gboard.y+ROW_1*(gm->NItem.rowNo+.5)));

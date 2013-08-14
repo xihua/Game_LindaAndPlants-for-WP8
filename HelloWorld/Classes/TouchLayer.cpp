@@ -36,10 +36,8 @@ bool TouchLayer::init()
 		this->setDelegate(NULL);
 		CCSize size=CCDirector::sharedDirector()->getWinSize();
 
-	//			//初始化
-
+	//初始化
 	//NItem.rowNo=NItem.colNo=0;
-
 	//CItem.rowNo=CItem.colNo=0;
 	//CItem.aftVId=CItem.befVId=CItem.aftHId=CItem.befHId=0;
 	//CItem.sameCount=0;
@@ -48,7 +46,6 @@ bool TouchLayer::init()
 	//Gboard.colOneItemPixel=Gboard.rowOneItemPixel=60.0f;
 	//Gboard.width= Gboard.colOneItemPixel*3;
 	//Gboard.height= Gboard.rowOneItemPixel*3;
-
 		bRet = true;
 	} while (0);
 
